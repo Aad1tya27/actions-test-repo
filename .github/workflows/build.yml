@@ -1,0 +1,15 @@
+name: Build Succeeds on PR
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    name: Find Merge Conflicts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: merge conflict finder
+        uses: olivernybroe/action-conflict-finder@v4.0
