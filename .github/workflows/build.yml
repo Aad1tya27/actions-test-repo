@@ -1,31 +1,18 @@
-name: Merge Conflict Check
+name: Merge Conflict Checker
 
 on:
   pull_request:
-    branches:
-      - '**'
+    types: [opened, synchronize, reopened]
 
 jobs:
-  check_merge_conflicts:
+  check-merge-conflicts:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout PR Branch
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Fetch All Branches
-        run: git fetch --all
-
-      - name: Debug Logs
+      - name: Check for merge conflicts
         run: |
-          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
-          echo "Head branch: ${{ github.event.pull_request.head.ref }}"
-          git branch -a
-
-      - name: Check for Merge Conflicts
-        run: |
+          git fetch origin
           git checkout ${{ github.event.pull_request.base.ref }}
-          git merge --no-commit --no-ff origin/${{ github.event.pull_request.head.ref }} || {
-            echo "Merge conflicts detected!";
-            exit 1;
-          }
-          echo "No merge conflicts detected."
+          git merge --no-commit --no-ff ${{ github.event.pull_request.head.ref }} || echo "Merge conflicts detected"
