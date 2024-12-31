@@ -2,20 +2,14 @@ name: Merge Conflict Checker
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - main
-      - test1
+    branches:    
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'
 
 jobs:
-  check-merge-conflicts:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Check for merge conflicts
-        run: |
-          git fetch origin
-          git checkout ${{ github.event.pull_request.base.ref }}
-          git merge --no-commit --no-ff ${{ github.event.pull_request.head.ref }} || echo "Merge conflicts detected"
+      - name: Run a simple command
+        run: echo "Test workflow triggered!"
