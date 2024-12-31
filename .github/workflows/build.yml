@@ -1,4 +1,4 @@
-name: Build Succeeds on PR
+name: Merge Conflict Check
 
 on:
   pull_request:
@@ -6,10 +6,20 @@ on:
       - '**'
 
 jobs:
-  build:
-    name: Find Merge Conflicts
+  check_merge_conflicts:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: merge conflict finder
-        uses: olivernybroe/action-conflict-finder@v4.0
+      - name: Checkout PR Branch
+        uses: actions/checkout@v2
+
+      - name: Fetch Base Branch
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+
+      - name: Check for Merge Conflicts
+        run: |
+          git merge --no-commit --no-ff origin/${{ github.event.pull_request.head.ref }} || {
+            echo "Merge conflicts detected!";
+            exit 1;
+          }
+          echo "No merge conflicts detected."
