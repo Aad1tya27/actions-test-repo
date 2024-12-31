@@ -9,19 +9,28 @@ on:
       - synchronize
       - reopened
 
+permissions:
+  contents: read
+
 jobs:
   check_merge_conflicts:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR Branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Fetch Base Branch
+      - name: Fetch All Branches
+        run: git fetch --all
+
+      - name: Debug Logs
         run: |
-          git fetch origin ${{ github.event.pull_request.base.ref }}
+          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
+          echo "Head branch: ${{ github.event.pull_request.head.ref }}"
+          git branch -a
 
       - name: Check for Merge Conflicts
         run: |
+          git checkout ${{ github.event.pull_request.base.ref }}
           git merge --no-commit --no-ff origin/${{ github.event.pull_request.head.ref }} || {
             echo "Merge conflicts detected!";
             exit 1;
