@@ -3,6 +3,9 @@ name: Merge Conflict Checker
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - test1
 
 jobs:
   check-merge-conflicts:
