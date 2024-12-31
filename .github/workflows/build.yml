@@ -1,4 +1,4 @@
-name: Merge Conflict Check
+name: Build Succeeds on PR
 
 on:
   pull_request:
@@ -6,11 +6,10 @@ on:
       - '**'
 
 jobs:
-  check_conflicts:
+  build:
+    name: Find Merge Conflicts
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout PR Branch
-        uses: actions/checkout@v2
-
-      - name: Check for Merge Conflicts
+      - uses: actions/checkout@v3
+      - name: merge conflict finder
         uses: olivernybroe/action-conflict-finder@v4.0
