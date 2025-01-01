@@ -6,10 +6,10 @@ on:
       - '**'
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v2
-            - name: Run a simple command
-              run: echo "PR workflow triggered!"
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run a simple command
+        run: echo "PR workflow triggered!"
