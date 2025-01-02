@@ -3,13 +3,14 @@ name: PR workflow
 on:
   pull_request:
     branches:
-      - main
+      - '**'
 
 jobs:
-  test:
+  Merge-Conflict-Job:
     runs-on: ubuntu-latest
+    name: Find merge conflicts
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run a simple command
-        run: echo "PR workflow triggered!"
+      - name: Merge Conflict finder
+        uses: olivernybroe/action-conflict-finder@v4.0
