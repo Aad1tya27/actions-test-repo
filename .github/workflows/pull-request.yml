@@ -16,7 +16,7 @@ jobs:
       - name: Checkout target branch
         run: git fetch origin ${{ github.base_ref }} && git checkout FETCH_HEAD
       - name: Attempt merge
-        run: git merge --no-commit --no-ff ${{ github.head_ref }}
+        run: git merge --no-commit --no-ff ${{ github.head_ref }} --allow-unrelated-histories
       - name: Fail if merge conflicts
         run: |
           if [ $? -ne 0 ]; then
