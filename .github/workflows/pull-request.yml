@@ -12,6 +12,7 @@ jobs:
       - name: Checkout source branch
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.head_ref }}
       - name: Checkout target branch
         run: git fetch origin ${{ github.base_ref }} && git checkout FETCH_HEAD
