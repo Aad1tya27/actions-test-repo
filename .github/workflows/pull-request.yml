@@ -23,22 +23,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.pull_request.head.ref }}
           
-      # - name: Configure Git Identity
-      #   run: |
-      #     git config --global user.name "github-actions[bot]"
-      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        
-      # - name: Fetch Target Branch
-      #   run: |
-      #     git fetch origin ${{ github.event.pull_request.base.ref }}
-
-      # - name: Check for Merge Conflicts
-      #   run: |
-      #     git checkout ${{ github.event.pull_request.base.ref }}
-      #     git merge --no-commit --no-ff --allow-unrelated-histories ${{ github.event.pull_request.head.ref }}  || exit 1
-      #   shell: bash
       - name: Check Mergeable Status via API
-        if: github.event_name == 'pull_request'
         run: |  
           response=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }})
