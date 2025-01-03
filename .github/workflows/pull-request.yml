@@ -37,13 +37,18 @@ jobs:
       #     git checkout ${{ github.event.pull_request.base.ref }}
       #     git merge --no-commit --no-ff --allow-unrelated-histories ${{ github.event.pull_request.head.ref }}  || exit 1
       #   shell: bash
-      - name: Wait for Mergeable Status
-        run: sleep 10
-      - name: Check Merge Conflicts
-        run: |
-          if [ "${{ github.event.pull_request.mergeable }}" == "true" ]; then
+      - name: Check Mergeable Status via API
+        run: |  
+          response=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }})
+          mergeable=$(echo "$response" | jq -r '.mergeable')
+          if [ "$mergeable" == "true" ]; then
             echo "No Conflicts.";
-          else
+          elif [ "$mergeable" == "false" ]; then
             echo "Merge conflicts detected.";
             exit 1;
+          else
+            echo "Mergeable status unknown. Exiting.";
+            exit 1;
           fi
+        shell: bash
