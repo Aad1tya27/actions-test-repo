@@ -38,5 +38,10 @@ jobs:
       #     git merge --no-commit --no-ff --allow-unrelated-histories ${{ github.event.pull_request.head.ref }}  || exit 1
       #   shell: bash
       - name: Check Merge Conflicts
-        if: ${{ github.event.pull_request.mergeable }}
-        run: echo "No Conflicts."
+        run: |
+          if [ "${{ github.event.pull_request.mergeable }}" == "true" ]; then
+            echo "No Conflicts.";
+          else
+            echo "Merge conflicts detected.";
+            exit 1;
+          fi
