@@ -29,5 +29,5 @@ jobs:
       - name: Check for Merge Conflicts
         run: |
           git checkout ${{ github.event.pull_request.base.ref }}
-          git merge --no-commit --no-ff ${{ github.event.pull_request.head.ref }} || exit 1
+          git merge --no-commit --no-ff --allow-unrelated-histories ${{ github.event.pull_request.head.ref }}  || exit 1
         shell: bash
